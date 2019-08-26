@@ -79,7 +79,7 @@ def main():
 
     plot_data(data, outfile, pdf, field)
     
-    print(data)
+    #print(data)
 
 if __name__ == "__main__":
     main()
