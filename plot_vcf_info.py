@@ -46,8 +46,11 @@ def vcf2list(vcfin, field):
         record_data = []
         record_data.append(record.CHROM)
         record_data.append(record.POS)
-        record_data.append(float(record.INFO[field][0]))
-        out.append(record_data)
+        try:
+            record_data.append(float(record.INFO[field][0]))
+            out.append(record_data)
+        except ValueError:
+            pass
     return(out)
 
 def plot_data(data, outfile, pdf, field):
