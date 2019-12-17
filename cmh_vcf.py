@@ -20,7 +20,7 @@ def parse_my_args():
     return(args)
 
 def get_arg_vars(args):
-    if args.vcf:
+    if args.vcf and args.vcf != "-":
         inconn = open(args.vcf, "r")
     else:
         inconn = sys.stdin
