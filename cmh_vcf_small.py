@@ -50,16 +50,16 @@ def cmh_pipeline(inpath, control_names, test_names):
     tnames_text = ",".join(test_names)
     all_names_text = ",".join(all_names)
     
-    # cmh_vcf = subprocess.Popen(['cmh_vcf', "-", '-C', cnames_text, '-T', tnames_text], stdin=subprocess.PIPE)
-    # cmh_vcf_in = cmh_vcf.stdin
-    # if inpath == "-":
-    #     subprocess.Popen(['vcf-subset', '-c', all_names_text] , stdout=cmh_vcf_in).communicate()
-    # else:
-    #     subprocess.Popen(['vcf-subset', '-c', all_names_text, inpath] , stdout=cmh_vcf_in).communicate()
-    # cmh_vcf.wait()
+    cmh_vcf = subprocess.Popen(['cmh_vcf', "-", '-C', cnames_text, '-T', tnames_text], stdin=subprocess.PIPE)
+    cmh_vcf_in = cmh_vcf.stdin
+    if inpath == "-":
+        subprocess.Popen(['vcf-subset', '-c', all_names_text] , stdout=cmh_vcf_in).communicate()
+    else:
+        subprocess.Popen(['vcf-subset', '-c', all_names_text, inpath] , stdout=cmh_vcf_in).communicate()
+    cmh_vcf.communicate()
     
-    vcf_subset_in = subprocess.Popen(['vcf-subset', '-c', all_names_text] , stdin=subprocess.PIPE).stdin
-    subprocess.Popen(['cmh_vcf', inpath, '-C', cnames_text, '-T', tnames_text], stdout=vcf_subset_in).communicate()
+    # vcf_subset_in = subprocess.Popen(['vcf-subset', '-c', all_names_text] , stdin=subprocess.PIPE).stdin
+    # subprocess.Popen(['cmh_vcf', inpath, '-C', cnames_text, '-T', tnames_text], stdout=vcf_subset_in).communicate()
 
 def main():
     args = parse_my_args()
