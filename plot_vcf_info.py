@@ -36,7 +36,7 @@ def get_arg_vars(args):
 
 def vcf2pd(vcfin, field):
     data = vcf2list(vcfin, field)
-    out = pd.DataFrame.from_records(data)
+    out = pd.DataFrame.from_records(data).dropna()
     out.columns = ["CHROM", "POS", field]
     return(out)
 
