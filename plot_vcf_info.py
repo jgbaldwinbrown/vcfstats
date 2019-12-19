@@ -16,6 +16,10 @@ def parse_my_args():
     parser.add_argument("vcf", nargs="?", help="Input VCF file; default stdin")
     parser.add_argument("-f", "--field",  help="VCF INFO field to plot; required.", required=True)
     parser.add_argument("-o", "--outfile", help="file to plot in; default = show")
+    parser.add_argument("-p", "--png", help="Plot a png instead of a pdf; default=pdf", action="store_true")
+    parser.add_argument("-d", "--dpi", help="Set dpi; default=300")
+    parser.add_argument("-x", "--xy", help="comma-separated number pair for width and height of plot. Default = 8,4.")
+    parser.add_argument("-a", "--alpha", help="Alpha (opacity) of plot points. 0.0 to 1.0, default = 1.0.")
 
     args = parser.parse_args()
     return(args)
@@ -32,7 +36,19 @@ def get_arg_vars(args):
     else:
         outfile = ""
         pdf = False
-    return((inconn, field, outfile, pdf))
+    
+    dpi = 300
+    if args.dpi:
+        dpi = int(args.dpi)
+    
+    xy = (8.0, 4.0)
+    alpha = 1.0
+    if args.xy:
+        xy = tuple((float(i) for i in args.xy.split(",")))
+    if args.alpha:
+        alpha = float(args.alpha)
+    
+    return((inconn, field, outfile, pdf, args.png, dpi, xy, alpha))
 
 def vcf2pd(vcfin, field):
     data = vcf2list(vcfin, field)
@@ -53,34 +69,44 @@ def vcf2list(vcfin, field):
             pass
     return(out)
 
-def plot_data(data, outfile, pdf, field):
+def plot_data(data, outfile, pdf, field, png, dpi, xy, alpha):
 
     #xtick = ['chr'+c for c in map(str, range(1, 15) + ['16', '18', '20', '22'])]
-    gv.gwas.manhattanplot(data,  
+    fig = plt.figure(figsize=xy)
+    ax = fig.add_subplot(1,1,1)
+    #plt.rcParams["figure.figsize"] = xy
+    theplot = gv.gwas.manhattanplot(data,  
+                             ax=ax, 
                              xlabel="Chromosome", 
                              ylabel=field, 
-                             xticklabel_kws={'rotation': 'vertical'}
+                             xticklabel_kws={'rotation': 'vertical'},
+                             mlog10=False,
+                             alpha=alpha
                              )
     #g = sns.FacetGrid(data)
     #g.map(sns.relplot, x='POS', y=field, data=data, col='CHROM')
     #g.set(xlim = 
     #g.set(ylim=(-1, 11), yticks=[0, 5, 10]);
     #myplot=sns.relplot(x='POS', y=field, data=data, col = 'CHROM')
+    #plt.set_size_inches(xy[0], xy[1])
     if pdf:
-        plt.savefig(outfile)
+        if png:
+            plt.savefig(outfile, format="png", dpi=dpi)
+        else:
+            plt.savefig(outfile)
     else:
         plt.show()
 
 def main():
     args = parse_my_args()
 
-    inconn, field , outfile, pdf = get_arg_vars(args)
+    inconn, field , outfile, pdf, png, dpi, xy, alpha = get_arg_vars(args)
 
     vcfin = vcf.Reader(inconn)
     data = vcf2pd(vcfin, field)
     inconn.close()
 
-    plot_data(data, outfile, pdf, field)
+    plot_data(data, outfile, pdf, field, png, dpi, xy, alpha)
     
     #print(data)
 
