@@ -69,17 +69,20 @@ def textify_records(records, control, test):
     ntest = len(test)
     text = ""
     for record in records:
-        afs = []
-        calls = [call for call in record]
-        for i in control:
-            count1 = int(calls[i].data.AD[0])
-            count2 = int(calls[i].data.AD[1])
-            afs.append(counts2af(count1, count2))
-        for i in test:
-            count1 = int(calls[i].data.AD[0])
-            count2 = int(calls[i].data.AD[1])
-            afs.append(counts2af(count1, count2))
-        text = text + "\t".join(map(str,afs)) + "\n"
+        try:
+            afs = []
+            calls = [call for call in record]
+            for i in control:
+                count1 = int(calls[i].data.AD[0])
+                count2 = int(calls[i].data.AD[1])
+                afs.append(counts2af(count1, count2))
+            for i in test:
+                count1 = int(calls[i].data.AD[0])
+                count2 = int(calls[i].data.AD[1])
+                afs.append(counts2af(count1, count2))
+            text = text + "\t".join(map(str,afs)) + "\n"
+        except:
+            pass
     return(text)
 
 def cybert_vcf(vcfin, control, test, outwriter, window_size, control_names, cnames, test_names, tnames):
