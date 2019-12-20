@@ -75,14 +75,14 @@ def cmh_vcf(vcfin, control, test, control_names, test_names, cnames, tnames, out
             
             tester = np.ndarray(shape=(2,2,len(control_cols)))
         
-        for i in range(len(control_cols)):
-            tester[0,0,i] = calls[control_cols[i]].data.AD[0]
-            tester[0,1,i] = calls[control_cols[i]].data.AD[1]
-            tester[1,0,i] = calls[test_cols[i]].data.AD[0]
-            tester[1,1,i] = calls[test_cols[i]].data.AD[1]
         try:
+            for i in range(len(control_cols)):
+                tester[0,0,i] = calls[control_cols[i]].data.AD[0]
+                tester[0,1,i] = calls[control_cols[i]].data.AD[1]
+                tester[1,0,i] = calls[test_cols[i]].data.AD[0]
+                tester[1,1,i] = calls[test_cols[i]].data.AD[1]
             cmh = sm.stats.StratifiedTable(tester)
-        except ValueError:
+        except (ValueError, TypeError):
             cmh = "NA"
         writeout(cmh, record, outwriter)
         #print(cmh.summary())
