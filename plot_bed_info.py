@@ -72,6 +72,7 @@ def vcf2list(vcfin, field):
 def plot_data(data, outfile, pdf, field, png, dpi, xy, alpha):
 
     #xtick = ['chr'+c for c in map(str, range(1, 15) + ['16', '18', '20', '22'])]
+    plt.ioff()
     fig = plt.figure(figsize=xy)
     ax = fig.add_subplot(1,1,1)
     #plt.rcParams["figure.figsize"] = xy
