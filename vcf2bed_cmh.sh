@@ -4,7 +4,7 @@ set -e
 cat "$@" | \
 mawk -F "\t" -v OFS="\t" \
 '!/^#/{
-    match($0, /;CMH=([0-9a-zA-Z.\-]+)/);
+    match($0, /(\t|;)CMH=([0-9a-zA-Z.\-]+)/);
     cmh_match = substr($0, RSTART, RLENGTH);
     match(cmh_match, /=/);
     cmh = substr(cmh_match, RSTART+1, length(cmh_match) - RSTART)
