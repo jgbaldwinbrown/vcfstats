@@ -20,11 +20,12 @@ def parse_header(com_cols):
         colres.append(re.compile(colname))
     for l in sys.stdin:
         l=l.rstrip('\n')
-        print(l)
         if l[:6] == "#CHROM":
             sl = l.split('\t')
             colnums = get_colnums(colres, sl)
+            print([sl[x] for x in colnums])
             break
+        print(l)
     return(colnums)
 
 def parse_body(cols):

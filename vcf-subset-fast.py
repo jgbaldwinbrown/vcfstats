@@ -9,7 +9,7 @@ def get_colnums(colres, sl):
     colnums = list(range(1, 10))
     for regex in colres:
         for i, col in enumerate(sl[9:]):
-            colnum = i + 9
+            colnum = i + 10
             if regex.match(col):
                 colnums.append(colnum)
     return(colnums)
@@ -25,11 +25,13 @@ def parse_header(com_cols):
         l = sys.stdin.readline()
         l = l.decode('utf-8')
         l=l.rstrip('\n')
-        print(l)
         if l[:6] == "#CHROM":
             sl = l.split('\t')
             colnums = get_colnums(colres, sl)
+            colnums_fix = [x-1 for x in colnums]
+            print("\t".join([sl[x] for x in colnums_fix]))
             break
+        print(l)
     sys.stdout.flush()
     sys.stdin.flush()
     return(colnums)
