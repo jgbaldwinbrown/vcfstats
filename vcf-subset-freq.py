@@ -24,9 +24,12 @@ def parse_body(threshold):
             ad2 = int(ad[1])
             minor = min(ad1,ad2)
             tot = ad1 + ad2
-            frac = float(minor) / float(tot)
-            if frac >= threshold:
-                ok = True
+            try:
+                frac = float(minor) / float(tot)
+                if frac >= threshold:
+                    ok = True
+            except ZeroDivisionError:
+                pass
         if ok:
             print(l)
 
