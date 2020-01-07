@@ -11,13 +11,15 @@ def parse_header():
         if l[:6] == "#CHROM":
             break
 
-def parse_body(threshold):
+def parse_body(threshold, cov_threshold):
     for l in sys.stdin:
         l = l.rstrip('\n')
         sl = l.split('\t')
         entries = sl[9:]
-        ok = False
         for entry in entries:
+            thresh_ok = False
+            cov_thresh_ok = True
+            error_ok = True
             try:
                 ad_str = entry.split(':')[1]
                 ad = ad_str.split(',')
@@ -26,18 +28,22 @@ def parse_body(threshold):
                 minor = min(ad1,ad2)
                 tot = ad1 + ad2
                 frac = float(minor) / float(tot)
+                if tot < cov_threshold:
+                    cov_thresh_ok = False
+                    break
                 if frac >= threshold:
-                    ok = True
+                    thresh_ok = True
             except (ZeroDivisionError, ValueError, TypeError, IndexError):
-                ok=False
+                error_ok=False
                 break
-        if ok:
+        if thresh_ok and cov_thresh_ok and error_ok:
             print(l)
 
 def main():
     threshold = float(sys.argv[1])
+    cov_threshold = int(sys.argv[2])
     parse_header()
-    parse_body(threshold)
+    parse_body(threshold, cov_threshold)
 
 if __name__ == "__main__":
     main()
