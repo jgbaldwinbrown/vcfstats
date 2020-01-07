@@ -2,10 +2,7 @@
 
 import re
 import collections
-import math
 import vcf
-import numpy as np
-import statsmodels.api as sm
 import sys
 import argparse
 import copy
@@ -39,10 +36,6 @@ def combine_vcf(vcfin, name, outwriter):
                     ad1 += 1
                 if i=="1":
                     ad2 += 1
-            #tester[i,0,0] = calls[control[i]].data.AD[0]
-            #tester[i,0,1] = calls[control[i]].data.AD[1]
-            #tester[i,1,0] = calls[test[i]].data.AD[0]
-            #tester[i,1,1] = calls[test[i]].data.AD[1]
         if ad1 >0 and ad2 > 0:
             gt = "0|1"
         elif ad2 > 0:
@@ -61,8 +54,6 @@ def writeout(gt, ad1, ad2, name, record, writer):
     CallData = collections.namedtuple("CallData", ["GT", "AD"])
     mycalldat = CallData(GT = str(gt), AD = [str(ad1), str(ad2)])
     newrecord.samples.append(vcf.model._Call(newrecord, name, mycalldat))
-    #record.INFO["CMH"] = str(cmh.test_null_odds().pvalue)
-    #record.INFO["NLOG10CMH"] = str(-math.log10(cmh.test_null_odds().pvalue))
     writer.write_record(newrecord)
 
 def main():
