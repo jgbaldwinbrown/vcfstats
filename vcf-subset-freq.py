@@ -28,8 +28,9 @@ def parse_body(threshold):
                 frac = float(minor) / float(tot)
                 if frac >= threshold:
                     ok = True
-            except ZeroDivisionError:
-                pass
+            except (ZeroDivisionError, ValueError, TypeError, IndexError):
+                ok=False
+                break
         if ok:
             print(l)
 
