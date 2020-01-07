@@ -18,13 +18,13 @@ def parse_body(threshold):
         entries = sl[9:]
         ok = False
         for entry in entries:
-            ad_str = entry.split(':')[1]
-            ad = ad_str.split(',')
-            ad1 = int(ad[0])
-            ad2 = int(ad[1])
-            minor = min(ad1,ad2)
-            tot = ad1 + ad2
             try:
+                ad_str = entry.split(':')[1]
+                ad = ad_str.split(',')
+                ad1 = int(ad[0])
+                ad2 = int(ad[1])
+                minor = min(ad1,ad2)
+                tot = ad1 + ad2
                 frac = float(minor) / float(tot)
                 if frac >= threshold:
                     ok = True
