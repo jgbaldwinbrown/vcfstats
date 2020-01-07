@@ -92,12 +92,32 @@ def cmh_vcf(inconn, control, test, control_names, test_names, cnames, tnames, ou
     for index, l in enumerate(inconn):
         sl = l.rstrip('\n').split('\t')
         
+        print(sl)
         try:
             for i in range(len(control_cols)):
-                tester[0,0,i] = int(sl[control_cols[i]].split(":")[1].split(",")[0])
-                tester[0,1,i] = int(sl[control_cols[i]].split(":")[1].split(",")[1])
-                tester[1,0,i] = int(sl[test_cols[i]].split(":")[1].split(",")[0])
-                tester[1,1,i] = int(sl[test_cols[i]].split(":")[1].split(",")[1])
+                control_col = control_cols[i]
+                control_entry = sl[control_col]
+                control_entry_list = control_entry.split(":")
+                control_ad = control_entry_list[1]
+                control_ad_list = control_ad.split(',')
+                control_ad1 = control_ad_list[0]
+                control_ad2 = control_ad_list[1]
+                tester[0,0,i] = int(control_ad1)
+                tester[0,1,i] = int(control_ad2)
+                
+                test_col = test_cols[i]
+                test_entry = sl[test_col]
+                test_entry_list = test_entry.split(":")
+                test_ad = test_entry_list[1]
+                test_ad_list = test_ad.split(',')
+                test_ad1 = test_ad_list[0]
+                test_ad2 = test_ad_list[1]
+                tester[1,0,i] = int(test_ad1)
+                tester[1,1,i] = int(test_ad2)
+                #tester[0,0,i] = int(sl[control_cols[i]].split(":")[1].split(",")[0])
+                #tester[0,1,i] = int(sl[control_cols[i]].split(":")[1].split(",")[1])
+                #tester[1,0,i] = int(sl[test_cols[i]].split(":")[1].split(",")[0])
+                #tester[1,1,i] = int(sl[test_cols[i]].split(":")[1].split(",")[1])
             cmh = sm.stats.StratifiedTable(tester)
         except (ValueError, TypeError):
             cmh = "NA"
