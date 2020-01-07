@@ -2,12 +2,10 @@
 
 import re
 import math
-import vcf
 import numpy as np
 import statsmodels.api as sm
 import sys
 import argparse
-import copy
 
 def parse_my_args():
     parser = argparse.ArgumentParser("Compute the Cochran-Mantel-Haenszel test on a VCF file")
@@ -110,7 +108,6 @@ def cmh_vcf(inconn, control, test, control_names, test_names, cnames, tnames, ou
         #test_ad0, test_ad1 = [calls.AD[:2] for i in test]
 
 def writeout(cmh, sl, outconn):
-    #newrecord = copy.deepcopy(record)
     try:
         cmhstr = str(cmh.test_null_odds().pvalue)
     except ValueError:
