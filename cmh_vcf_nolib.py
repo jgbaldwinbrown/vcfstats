@@ -92,6 +92,8 @@ def cmh_vcf(inconn, control, test, control_names, test_names, cnames, tnames, ou
     for index, l in enumerate(inconn):
         sl = l.rstrip('\n').split('\t')
         
+        print(control_cols)
+        print(test_cols)
         print(sl)
         try:
             for i in range(len(control_cols)):
