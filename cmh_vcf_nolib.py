@@ -99,7 +99,7 @@ def cmh_vcf(inconn, control, test, control_names, test_names, cnames, tnames, ou
                 tester[1,0,i] = int(sl[test_cols[i]].split(":")[-1].split(",")[0])
                 tester[1,1,i] = int(sl[test_cols[i]].split(":")[-1].split(",")[1])
             cmh = sm.stats.StratifiedTable(tester)
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, IndexError):
             cmh = "NA"
         writeout(cmh, sl, sys.stdout)
         #print(cmh.summary())
@@ -110,11 +110,11 @@ def cmh_vcf(inconn, control, test, control_names, test_names, cnames, tnames, ou
 def writeout(cmh, sl, outconn):
     try:
         cmhstr = str(cmh.test_null_odds().pvalue)
-    except ValueError:
+    except (ValueError, AttributeError):
         cmhstr = "NA"
     try:
         nlog10cmhstr = str(-math.log10(cmh.test_null_odds().pvalue))
-    except ValueError:
+    except (ValueError, AttributeError):
         nlog10cmhstr = "NA"
     if sl[7] == ".":
         sl[7] = "CMH=" + cmhstr
