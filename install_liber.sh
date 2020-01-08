@@ -7,4 +7,5 @@ cp vcf-subset-freq.py ~/mybin/vcf-subset-freq
 cp plot_bed_info_liber.py ~/mybin/plot_bed_info
 cp plot_vcf_info_liber.py ~/mybin/plot_vcf_info
 cp vcf2bed_cmh.sh ~/mybin/vcf2bed_cmh
-cp plot_vcf_cmh_fast_liber.sh ~/mybin/plot_vcf_cmh_fast
+cp plot_vcf_cmh_fast.sh ~/mybin/plot_vcf_cmh_fast
+cp plot_vcf_cmh_fast_wide.sh ~/mybin/plot_vcf_cmh_fast_wide
