@@ -1,0 +1,5 @@
+#!/bin/bash
+set -e
+
+mkdir -p test11_out
+pfst "^NA00002$,^NA00003$" "^NA00005$,^NA00006$" vcf7.txt test11_out/vcf7_pfst_subset.vcf test11_out/vcf7_pfst_subset_freq.vcf test11_out/vcf7_pfst.txt
