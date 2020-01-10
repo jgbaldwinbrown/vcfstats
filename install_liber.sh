@@ -10,3 +10,5 @@ cp vcf2bed_cmh.sh ~/mybin/vcf2bed_cmh
 cp plot_vcf_cmh_fast.sh ~/mybin/plot_vcf_cmh_fast
 cp plot_vcf_cmh_fast_wide.sh ~/mybin/plot_vcf_cmh_fast_wide
 cp plot_vcf_cmh_fast_wide_lowdpi.sh ~/mybin/plot_vcf_cmh_fast_wide_lowdpi
+cp pfst.sh ~/mybin/pfst
+cp vcf_colnums.py ~/mybin/vcf_colnums
