@@ -55,7 +55,7 @@ def cybert_pipeline(inpath, control_names, test_names, window_size):
     
     cybert_vcf = subprocess.Popen(
         [
-            'cybert_vcf',
+            'cybert_vcf_nolib',
             "-",
             '-C', cnames_text, 
             '-T', tnames_text, 
