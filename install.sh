@@ -14,3 +14,4 @@ cp pfst.sh ~/mybin/pfst
 cp vcf_colnums.py ~/mybin/vcf_colnums
 cp cybert_vcf_nolib.py ~/mybin/cybert_vcf_nolib
 cp cybert_vcf_small_fast.py ~/mybin/cybert_vcf_small_fast
+cp pfst2bed.py ~/mybin/pfst2bed
