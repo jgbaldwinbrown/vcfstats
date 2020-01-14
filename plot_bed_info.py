@@ -13,9 +13,9 @@ sys.path.append("/home/jgbaldwinbrown/Documents/git_repositories/geneview")
 import geneview as gv
 
 def parse_my_args():
-    parser = argparse.ArgumentParser("Plot the chosen field from a vcf file.")
-    parser.add_argument("vcf", nargs="?", help="Input VCF file; default stdin")
-    parser.add_argument("-f", "--field",  help="VCF INFO field to plot; required.", required=True)
+    parser = argparse.ArgumentParser("Plot the chosen field from a BED file.")
+    parser.add_argument("vcf", nargs="?", help="Input BED file; default stdin")
+    parser.add_argument("-f", "--field",  help="Name of BED field to plot; required.", required=True)
     parser.add_argument("-o", "--outfile", help="file to plot in; default = show")
     parser.add_argument("-p", "--png", help="Plot a png instead of a pdf; default=pdf", action="store_true")
     parser.add_argument("-d", "--dpi", help="Set dpi; default=300")
