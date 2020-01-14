@@ -15,3 +15,5 @@ cp vcf_colnums.py ~/mybin/vcf_colnums
 cp cybert_vcf_nolib.py ~/mybin/cybert_vcf_nolib
 cp cybert_vcf_small_fast.py ~/mybin/cybert_vcf_small_fast
 cp pfst2bed.py ~/mybin/pfst2bed
+cp vcf2bed_pfst.sh ~/mybin/vcf2bed_pfst
+cp plot_vcf_pfst_fast_wide_lowdpi.sh ~/mybin/plot_vcf_pfst_fast_wide_lowdpi
