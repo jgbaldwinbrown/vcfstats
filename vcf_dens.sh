@@ -9,7 +9,7 @@ STEP="$5"
 
 # Make 5Mb sliding windows (step 1Mb)
 bedtools makewindows \
--g <( grep '^X' ${FAI} ) \
+-g ${FAI} \
 -w ${WIN} \
 -s ${STEP} \
 -i winnum \
