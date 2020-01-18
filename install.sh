@@ -19,3 +19,4 @@ cp vcf2bed_pfst.sh ~/mybin/vcf2bed_pfst
 cp plot_vcf_pfst_fast_wide_lowdpi.sh ~/mybin/plot_vcf_pfst_fast_wide_lowdpi
 cp vcf2bed_cybert.sh ~/mybin/vcf2bed_cybert
 cp plot_vcf_cybert_fast_wide_lowdpi.sh ~/mybin/plot_vcf_cybert_fast_wide_lowdpi
+cp vcf_dens.sh ~/mybin/vcf_dens
