@@ -31,11 +31,15 @@ def combine_vcf(vcfin, name, outwriter):
         ad2 = 0
         for call in calls:
             callgt = regex.split(call["GT"])
+            if len(callgt) == 1:
+                inc = 2
+            else:
+                inc = 1
             for i in callgt:
                 if i=="0":
-                    ad1 += 1
+                    ad1 += inc
                 if i=="1":
-                    ad2 += 1
+                    ad2 += inc
         if ad1 >0 and ad2 > 0:
             gt = "0|1"
         elif ad2 > 0:
