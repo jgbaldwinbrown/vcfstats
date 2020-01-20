@@ -21,3 +21,6 @@ cp vcf2bed_cybert.sh ~/mybin/vcf2bed_cybert
 cp plot_vcf_cybert_fast_wide_lowdpi.sh ~/mybin/plot_vcf_cybert_fast_wide_lowdpi
 cp vcf_dens.sh ~/mybin/vcf_dens
 cp vcf2bed_clean.sh ~/mybin/vcf2bed_clean
+cp bed2png.sh ~/mybin/bed2png
+cp combine_single_indivs_fast.py ~/mybin/combine_single_indivs_fast
+cp combine_single_indivs.py ~/mybin/combine_single_indivs
