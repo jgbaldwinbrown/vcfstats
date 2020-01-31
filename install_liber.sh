@@ -11,6 +11,7 @@ cp plot_vcf_cmh_fast.sh ~/mybin/plot_vcf_cmh_fast
 cp plot_vcf_cmh_fast_wide.sh ~/mybin/plot_vcf_cmh_fast_wide
 cp plot_vcf_cmh_fast_wide_lowdpi.sh ~/mybin/plot_vcf_cmh_fast_wide_lowdpi
 cp pfst.sh ~/mybin/pfst
+cp pfst_nopool.sh ~/mybin/pfst_nopool
 cp vcf_colnums.py ~/mybin/vcf_colnums
 cp cybert_vcf_nolib.py ~/mybin/cybert_vcf_nolib
 cp cybert_vcf_small_fast.py ~/mybin/cybert_vcf_small_fast
