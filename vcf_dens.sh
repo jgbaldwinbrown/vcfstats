@@ -9,14 +9,14 @@ STEP="$5"
 
 # Make 5Mb sliding windows (step 1Mb)
 bedtools makewindows \
--g ${FAI} \
--w ${WIN} \
--s ${STEP} \
--i winnum \
-> ${OPRE}_windows.bed
+    -g ${FAI} \
+    -w ${WIN} \
+    -s ${STEP} \
+    -i winnum \
+> ${OPRE}_windows_${WIN}_${STEP}.bed
 
 # Obtain densities of genes within individual windows
 bedtools coverage \
--a ${OPRE}_windows.bed \
--b <( sortBed -i ${IN} ) \
-> ${OPRE}_windows_${WIN}.bed
+    -a ${OPRE}_windows_${WIN}_${STEP}.bed \
+    -b <( sortBed -i ${IN} ) \
+> ${OPRE}_dens_windows_${WIN}_${STEP}.bed
