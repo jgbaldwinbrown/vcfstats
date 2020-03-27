@@ -32,8 +32,6 @@ def get_arg_vars(args):
     elif args.column_names:
         colnames = [x for x in args.column_names.split(",")]
         cnames = True
-    else:
-        sys.exit("Must specify control columns.")
     
     return((inconn, col, colnames, cnames))
 
@@ -46,7 +44,7 @@ def get_colnums(colres, sl):
                 colnums.append(colnum)
     return(colnums)
 
-def parse_header(inconn, colnames):
+def parse_header(inconn, colnames, cnames):
     colres = []
     for colname in colnames:
         colres.append(re.compile(colname))
@@ -57,7 +55,10 @@ def parse_header(inconn, colnames):
         # print(l)
         if l[:6] == "#CHROM":
             sl = l.split('\t')
-            colnums = get_colnums(colres, sl)
+            if cnames:
+                colnums = get_colnums(colres, sl)
+            else:
+                colnums = [x for x in range(9, len(sl))]
             break
     return(colnums)
 
@@ -83,7 +84,7 @@ def syncify(chrom, pos, ref_allele, alt_allele, ads):
 
 def vcf2sync(inconn, col, col_names, cnames, outconn):
     
-    cols = parse_header(inconn, col_names)
+    cols = parse_header(inconn, col_names, cnames)
     
     for index, l in enumerate(inconn):
         sl = l.rstrip('\n').split('\t')
