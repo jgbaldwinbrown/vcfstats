@@ -25,3 +25,4 @@ cp vcf2bed_clean.sh ~/mybin/vcf2bed_clean
 cp bed2png.sh ~/mybin/bed2png
 cp combine_single_indivs_fast.py ~/mybin/combine_single_indivs_fast
 cp combine_single_indivs.py ~/mybin/combine_single_indivs
+cp vcf2sync.py ~/mybin/vcf2sync
