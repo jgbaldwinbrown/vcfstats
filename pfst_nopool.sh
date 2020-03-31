@@ -15,14 +15,14 @@ OD=`dirname ${4}`
 mkdir -p ${OD}
 
 vcf-subset-fast "${1},${2}" <${3} > ${SI}
-vcf-subset-freq 0.1 20 <${SI} > ${FSI}
+# vcf-subset-freq-nopool 0.1 5 <${SI} > ${FSI}
 
-BACKGROUND_COLS=`vcf_colnums "${1}" <${FSI}`
-TARGET_COLS=`vcf_colnums "${2}" <${FSI}`
+BACKGROUND_COLS=`vcf_colnums "${1}" <${SI}`
+TARGET_COLS=`vcf_colnums "${2}" <${SI}`
 
 pFst \
     --target "${TARGET_COLS}" \
     --background "${BACKGROUND_COLS}" \
-    --file ${FSI} \
-    --type GP \
+    --file ${SI} \
+    --type PL \
 > ${O}
