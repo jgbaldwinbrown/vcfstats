@@ -59,6 +59,7 @@ def parse_header(inconn, colnames, cnames):
                 colnums = get_colnums(colres, sl)
             else:
                 colnums = [x for x in range(9, len(sl))]
+            print(colnums)
             break
     return(colnums)
 
@@ -100,13 +101,17 @@ def vcf2sync(inconn, col, col_names, cnames, outconn):
             entry_list = entry.split(":")
             ad = entry_list[1]
             ad_list = ad.split(',')
-        try:
-            ad1 = ad_list[0]
-            ad2 = ad_list[1]
+            try:
+                ad1 = ad_list[0]
+                ad2 = ad_list[1]
+            except IndexError:
+                ad1 = None
+                ad2 = None
             ads.append((ad1, ad2))
+        try:
             sync_entry = syncify(chrom, pos, ref_allele, alt_allele, ads)
             writeout(sync_entry, sys.stdout)
-        except (ValueError, IndexError) as error:
+        except ValueError:
             pass
         #print(cmh.summary())
 
