@@ -59,7 +59,6 @@ def parse_header(inconn, colnames, cnames):
                 colnums = get_colnums(colres, sl)
             else:
                 colnums = [x for x in range(9, len(sl))]
-            print(colnums)
             break
     return(colnums)
 
