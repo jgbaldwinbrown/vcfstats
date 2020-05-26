@@ -100,14 +100,13 @@ def vcf2sync(inconn, col, col_names, cnames, outconn):
             entry_list = entry.split(":")
             ad = entry_list[1]
             ad_list = ad.split(',')
+        try:
             ad1 = ad_list[0]
             ad2 = ad_list[1]
             ads.append((ad1, ad2))
-        
-        try:
             sync_entry = syncify(chrom, pos, ref_allele, alt_allele, ads)
             writeout(sync_entry, sys.stdout)
-        except ValueError:
+        except (ValueError, IndexError) as error:
             pass
         #print(cmh.summary())
 
