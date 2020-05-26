@@ -104,8 +104,11 @@ def vcf2sync(inconn, col, col_names, cnames, outconn):
             ad2 = ad_list[1]
             ads.append((ad1, ad2))
         
-        sync_entry = syncify(chrom, pos, ref_allele, alt_allele, ads)
-        writeout(sync_entry, sys.stdout)
+        try:
+            sync_entry = syncify(chrom, pos, ref_allele, alt_allele, ads)
+            writeout(sync_entry, sys.stdout)
+        except ValueError:
+            pass
         #print(cmh.summary())
 
         #ad0, ad1 = [calls.AD[:2] for i in control]
