@@ -111,7 +111,7 @@ def vcf2sync(inconn, col, col_names, cnames, outconn):
         try:
             sync_entry = syncify(chrom, pos, ref_allele, alt_allele, ads)
             writeout(sync_entry, sys.stdout)
-        except ValueError:
+        except (ValueError, TypeError):
             pass
         #print(cmh.summary())
 
