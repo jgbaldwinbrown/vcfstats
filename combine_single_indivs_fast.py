@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
 import re
-import collections
-import vcf
 import sys
 import argparse
-import copy
 
 def parse_my_args():
     parser = argparse.ArgumentParser("Combines a VCF of individual calls into one large VCF for population.")
