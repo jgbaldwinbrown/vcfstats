@@ -27,3 +27,4 @@ cp bed2png.sh ~/mybin/bed2png
 cp combine_single_indivs_fast.py ~/mybin/combine_single_indivs_fast
 cp combine_single_indivs.py ~/mybin/combine_single_indivs
 cp vcf2sync.py ~/mybin/vcf2sync
+cp combine_all_singles.py ~/mybin/combine_all_singles
