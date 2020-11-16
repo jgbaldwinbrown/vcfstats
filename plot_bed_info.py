@@ -21,6 +21,7 @@ def parse_my_args():
     parser.add_argument("-d", "--dpi", help="Set dpi; default=300")
     parser.add_argument("-x", "--xy", help="comma-separated number pair for width and height of plot. Default = 8,4.")
     parser.add_argument("-a", "--alpha", help="Alpha (opacity) of plot points. 0.0 to 1.0, default = 1.0.")
+    parser.add_argument("-c", "--column", help="Column to plot, counting the first optional column as 0; default = 1.")
 
     args = parser.parse_args()
     return(args)
@@ -49,29 +50,21 @@ def get_arg_vars(args):
     if args.alpha:
         alpha = float(args.alpha)
     
-    return((inconn, field, outfile, pdf, args.png, dpi, xy, alpha))
+    col = 1
+    if args.column:
+        col = int(args.column)
+    
+    return((inconn, field, outfile, pdf, args.png, dpi, xy, alpha, col))
 
-def bed2pd(inconn, field):
+def bed2pd(inconn, field, col):
+    col_adj = col + 3
     data = pd.read_csv(inconn, header=None, sep="\t")
-    data.columns = ["CHROM", "POS1", "POS", "CMH", "NLOG10CMH"]
+    #data.columns = ["CHROM", "POS1", "POS", "CMH", "NLOG10CMH"]
     out = pd.DataFrame.from_records(data).dropna()
-    out = out[["CHROM", "POS", "NLOG10CMH"]]
+    out = out.iloc[:, [0, 1, col_adj]]
     return(out)
 
-def vcf2list(vcfin, field):
-    out = []
-    for record in vcfin:
-        record_data = []
-        record_data.append(record.CHROM)
-        record_data.append(record.POS)
-        try:
-            record_data.append(float(record.INFO[field][0]))
-            out.append(record_data)
-        except ValueError:
-            pass
-    return(out)
-
-def plot_data(data, outfile, pdf, field, png, dpi, xy, alpha):
+def plot_data(data, outfile, pdf, field, png, dpi, xy, alpha, col):
 
     #xtick = ['chr'+c for c in map(str, range(1, 15) + ['16', '18', '20', '22'])]
     plt.ioff()
@@ -103,12 +96,12 @@ def plot_data(data, outfile, pdf, field, png, dpi, xy, alpha):
 def main():
     args = parse_my_args()
 
-    inconn, field , outfile, pdf, png, dpi, xy, alpha = get_arg_vars(args)
+    inconn, field , outfile, pdf, png, dpi, xy, alpha, col = get_arg_vars(args)
 
-    data = bed2pd(inconn, field)
+    data = bed2pd(inconn, field, col)
     inconn.close()
 
-    plot_data(data, outfile, pdf, field, png, dpi, xy, alpha)
+    plot_data(data, outfile, pdf, field, png, dpi, xy, alpha, col)
     
     #print(data)
 

@@ -13,10 +13,14 @@ bedtools makewindows \
     -w ${WIN} \
     -s ${STEP} \
     -i winnum \
-> ${OPRE}_windows_${WIN}_${STEP}.bed
+    | \
+gzip -c \
+> ${OPRE}_windows_${WIN}_${STEP}.bed.gz
 
 # Obtain densities of genes within individual windows
 bedtools coverage \
-    -a ${OPRE}_windows_${WIN}_${STEP}.bed \
+    -a <(gunzip -c ${OPRE}_windows_${WIN}_${STEP}.bed) \
     -b <( sortBed -i ${IN} ) \
-> ${OPRE}_dens_windows_${WIN}_${STEP}.bed
+    | \
+gzip -c \
+> ${OPRE}_dens_windows_${WIN}_${STEP}.bed.gz
