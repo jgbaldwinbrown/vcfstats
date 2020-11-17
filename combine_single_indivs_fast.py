@@ -32,6 +32,7 @@ def combine_vcf(inconn, name, outconn):
             out = record[:9]
             out.append(name)
             outconn.write("\t".join(map(str, out)))
+            outconn.write("\n")
             continue
         calls = record[9:]
         ad1 = 0
