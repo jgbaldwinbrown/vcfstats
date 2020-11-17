@@ -1,11 +1,10 @@
-#!/usr/bin/env /home/jbrown/.linuxbrew/bin/python3
 #!/usr/bin/env python3
 
+import re
 import os
 import subprocess
 import tempfile
 import math
-import vcf
 import sys
 import argparse
 
@@ -58,6 +57,15 @@ def get_arg_vars(args):
     window_size = args.window_size
     return((inconn, control, test, window_size, controlnames, cnames, testnames, tnames))
 
+def get_colnums(colres, sl):
+    colnums = []
+    for regex in colres:
+        for i, col in enumerate(sl[9:]):
+            colnum = i + 9
+            if regex.match(col):
+                colnums.append(colnum)
+    return(colnums)
+
 def counts2af(count1, count2):
     try:
         out = float(count1) / (float(count1) + float(count2))
@@ -65,54 +73,73 @@ def counts2af(count1, count2):
         out = "NA"
     return(out)
 
-def textify_records(records, control, test):
-    ncontrol = len(control)
-    ntest = len(test)
+def textify_records(records, control_cols, test_cols):
+    ncontrol = len(control_cols)
+    ntest = len(test_cols)
     text = ""
     for record in records:
-        try:
-            afs = []
-            calls = [call for call in record]
-            for i in control:
-                count1 = int(calls[i].data.AD[0])
-                count2 = int(calls[i].data.AD[1])
-                afs.append(counts2af(count1, count2))
-            for i in test:
-                count1 = int(calls[i].data.AD[0])
-                count2 = int(calls[i].data.AD[1])
-                afs.append(counts2af(count1, count2))
-            text = text + "\t".join(map(str,afs)) + "\n"
-        except:
-            pass
+        sl = record.rstrip('\n').split('\t')
+        #try:
+        afs = []
+        for i in range(len(control_cols)):
+            control_col = control_cols[i]
+            control_entry = sl[control_col]
+            control_entry_list = control_entry.split(":")
+            control_ad = control_entry_list[1]
+            control_ad_list = control_ad.split(',')
+            control_ad1 = control_ad_list[0]
+            control_ad2 = control_ad_list[1]
+            afs.append(counts2af(control_ad1, control_ad2))
+        
+        for i in range(len(test_cols)):
+            test_col = test_cols[i]
+            test_entry = sl[test_col]
+            test_entry_list = test_entry.split(":")
+            test_ad = test_entry_list[1]
+            test_ad_list = test_ad.split(',')
+            test_ad1 = test_ad_list[0]
+            test_ad2 = test_ad_list[1]
+            afs.append(counts2af(test_ad1, test_ad2))
+        text = text + "\t".join(map(str,afs)) + "\n"
+        #except:
+        #    pass
     return(text)
 
-def cybert_vcf(vcfin, control, test, outwriter, window_size, control_names, cnames, test_names, tnames):
+def parse_header(inconn, control_colnames, test_colnames):
+    test_colres = []
+    control_colres = []
+    for colname in test_colnames:
+        test_colres.append(re.compile(colname))
+    for colname in control_colnames:
+        control_colres.append(re.compile(colname))
+    while True:
+        l = inconn.readline()
+        l = l
+        l=l.rstrip('\n')
+        print(l)
+        if l[:6] == "#CHROM":
+            sl = l.split('\t')
+            test_colnums = get_colnums(test_colres, sl)
+            control_colnums = get_colnums(control_colres, sl)
+            break
+    #sys.stdout.flush()
+    #sys.stdin.flush()
+    return(test_colnums, control_colnums)
+
+def cybert_vcf(inconn, control, test, outconn, window_size, control_names, cnames, test_names, tnames):
     records = []
     records_txt = []
+    test_cols, control_cols = parse_header(inconn, control_names, test_names)
     
-    for index, record in enumerate(vcfin):
+    for index, record in enumerate(inconn):
         records.append(record)
-        
-        if index == 0:
-            calls = [call for call in record]
-            if cnames:
-                colnames = [x.sample for x in calls]
-                control_cols = [colnames.index(control_name) for control_name in control_names]
-            else:
-                control_cols = control
-            
-            if tnames:
-                colnames = [x.sample for x in calls]
-                test_cols = [colnames.index(test_name) for test_name in test_names]
-            else:
-                test_cols = test
         
         records_txt.append(textify_records([record], control_cols, test_cols))
     
     #records_txt = "\n".join(records)
     
     cybert_data = cybert_from_r(records_txt, len(control_cols), len(test_cols), window_size)
-    write_it(records, cybert_data, outwriter)
+    write_it(records, cybert_data, outconn)
 
 def cybert_from_r(records_txt, control_count, test_count, window_size):
     mytemp = tempfile.NamedTemporaryFile(mode="w+", delete=False)
@@ -144,25 +171,36 @@ def getpvals(cybert_data):
             pass
     return(pvals)
 
-def write_it(records, cybert_data, writer):
+def write_it(records, cybert_data, outconn):
     cybert_pvals = getpvals(cybert_data)
     for record, cyberp in zip(records, cybert_pvals):
-        writeout(cyberp, record, writer)
+        writeout(cyberp, record, outconn)
 
-def writeout(cyberp, record, writer):
-    #newrecord = copy.deepcopy(record)
-    record.INFO["CYBERP"] = str(cyberp)
-    record.INFO["NLOG10CYBERP"] = str(-math.log10(cyberp))
-    writer.write_record(record)
+def writeout(cyberp, record, outconn):
+    sl = record.rstrip('\n').split('\t')
+    try:
+        cyberpstr = str(cyberp)
+    except (ValueError, AttributeError):
+        cyberpstr = "NA"
+    try:
+        nlog10cyberpstr = str(-math.log10(float(cyberp)))
+    except (ValueError, AttributeError):
+        nlog10cyberpstr = "NA"
+    if sl[7] == ".":
+        sl[7] = "CYBERP=" + cyberpstr
+    else:
+        sl[7] = sl[7] + ";CYBERP=" + cyberpstr
+    sl[7] = sl[7] + ";NLOG10CYBERP=" + nlog10cyberpstr
+    outconn.write("\t".join(sl) + "\n")
+
 
 def main():
     args = parse_my_args()
 
     inconn, control, test, window_size, control_names, cnames, test_names, tnames = get_arg_vars(args)
+    outconn = sys.stdout
 
-    vcfin = vcf.Reader(inconn)
-    outwriter = vcf.Writer(sys.stdout, vcfin)
-    cybert_vcf(vcfin, control, test, outwriter, window_size, control_names, cnames, test_names, tnames)
+    cybert_vcf(inconn, control, test, outconn, window_size, control_names, cnames, test_names, tnames)
 
     inconn.close()
 
