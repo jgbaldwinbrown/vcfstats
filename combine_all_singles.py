@@ -19,7 +19,7 @@ def get_combos(inconn, vcfin):
         with open(combo["names_path"], "r") as inpaths_conn:
             for l in inpaths_conn:
                 name = l.rstrip('\n')
-                name_regex = "^" + name + "$"
+                name_regex = "^" + name + "$$"
                 combo["names"].append(name)
                 combo["name_regexes"].append(name_regex)
             combo["name_full_regex"] = ",".join(combo["name_regexes"])
