@@ -12,8 +12,8 @@ def get_combos(inconn, vcfin):
             "breed": sl[1],
             "gen": sl[2],
             "treatment": sl[3],
-            "outprefix": sl[4],
-            "replicate": sl[5],
+            "replicate": sl[4],
+            "outprefix": sl[5],
             "names": [],
             "name_regexes": [],
             "name_full_regex": []
@@ -35,7 +35,7 @@ def generate_combo(combo, vcfin, all_targets, all_commands):
     all_commands.append(vcf_subset_target)
     all_commands.append(vcf_subset_command)
     
-    outname = combo["breed"] + "_" + combo["gen"] + "_" + combo["treatment"]
+    outname = combo["breed"] + "_" + combo["gen"] + "_" + combo["treatment"] + "_" + combo["replicate"]
     outpath = combo["outprefix"] + ".vcf.gz"
     combine_target = outpath + ": " + splitvcfname
     combine_command = "\tgunzip -c " + splitvcfname + " | combine_single_indivs_fast -n " + outname + " | bgzip -c > " + outpath
