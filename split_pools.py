@@ -31,7 +31,7 @@ def get_combos(inconn, vcfin):
 def generate_combo(combo, vcfin, all_targets, all_commands):
     splitvcfname = combo["outprefix"] + ".split.vcf.gz"
     vcf_subset_target = splitvcfname + ": " + vcfin
-    vcf_subset_command = "\tgunzip -c " + vcfin + " | vcf-subset-fast '" + combo["name_full_regex"] + "' | bgzip -c > " + splitvcfname
+    vcf_subset_command = "\tgunzip -c " + vcfin + " | vcf-subset-fast-dup '" + combo["name_full_regex"] + "' | bgzip -c > " + splitvcfname
     all_commands.append(vcf_subset_target)
     all_commands.append(vcf_subset_command)
     all_targets.append(splitvcfname)
