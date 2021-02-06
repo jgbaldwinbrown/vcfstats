@@ -5,7 +5,7 @@ import sys
 import argparse
 
 # globals:
-ident = ["a","t","g","c","n","0"]
+ident = ["a","t","c","g","n","0"]
 
 # functions:
 
