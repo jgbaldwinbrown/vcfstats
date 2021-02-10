@@ -31,3 +31,4 @@ cp vcf2sync.py ~/mybin/vcf2sync
 cp combine_all_singles.py ~/mybin/combine_all_singles
 cp combine_all_singles_replicates.py ~/mybin/combine_all_singles_replicates
 cp split_pools.py ~/mybin/split_pools
+cp sync_filter.py ~/mybin/sync_filter
