@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # command line options:
 # $1: control columns
@@ -26,3 +25,7 @@ pFst \
     --file ${SI} \
     --type PL \
 > ${O}
+
+if [ -s "${SI}" ] ; then
+	rm "${SI}"
+fi

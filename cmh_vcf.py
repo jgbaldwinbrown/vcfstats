@@ -1,5 +1,5 @@
-#!/usr/bin/env /home/jbrown/.linuxbrew/bin/python3
 #!/usr/bin/env python3
+#!/usr/bin/env /home/jbrown/.linuxbrew/bin/python3
 
 import math
 import vcf
