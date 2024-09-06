@@ -10,7 +10,7 @@ import sys
 import argparse
 
 def parse_my_args():
-    parser = argparse.ArgumentParser("Compute the Cochran-Mantel-Haenszel test on a VCF file")
+    parser = argparse.ArgumentParser("Compute the Cyber-t test on a VCF file")
     parser.add_argument("vcf", nargs="?", help="Input VCF file; default stdin")
     parser.add_argument("-c", "--control",  help="comma separated, 0-indexed VCF columns to use as controls; required.")
     parser.add_argument("-t", "--test",  help="comma separated, 0-indexed VCF columns to use as test data; required.")

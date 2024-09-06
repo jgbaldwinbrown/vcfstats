@@ -10,10 +10,10 @@ ident = ["a","t","c","g","n","0"]
 # functions:
 
 def parse_my_args():
-    parser = argparse.ArgumentParser("Compute the Cochran-Mantel-Haenszel test on a VCF file")
+    parser = argparse.ArgumentParser("Convert a VCF file to the sync format")
     parser.add_argument("vcf", nargs="?", help="Input VCF file; default stdin")
-    parser.add_argument("-c", "--columns",  help="comma separated, 0-indexed VCF columns to use as controls (default = all); not compatible with -C.")
-    parser.add_argument("-C", "--column_names",  help="comma separated names of VCF columns to use as controls (default = all); not compatible with -c.")
+    parser.add_argument("-c", "--columns",  help="comma separated, 0-indexed VCF columns to convert (default = all); not compatible with -C.")
+    parser.add_argument("-C", "--column_names",  help="comma separated names of VCF columns to convert (default = all); not compatible with -c.")
 
     args = parser.parse_args()
     return(args)
